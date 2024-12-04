@@ -7,7 +7,7 @@ require('dotenv').config();
 const app = express();
 
 const corsOptions = {
-  origin: 'http://192.168.1.57:3001',  // Your frontend URL
+  origin: '*',  // Your frontend URL
   methods: ['GET', 'POST', 'DELETE'], // Allow specific methods (you can add more if needed)
   allowedHeaders: ['Content-Type', 'Authorization'], // Allow headers you want
 };
