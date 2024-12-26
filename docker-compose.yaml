@@ -1,0 +1,52 @@
+version: "3.3"
+
+services:
+  frontend:
+    container_name: front 
+    restart: always
+    ports:
+      - "8088:80"
+    build:
+      context: /var/www/html/3-tier-todo/my-react-app
+      dockerfile:  /var/www/html/3-tier-todo/my-react-app/Dockerfile 
+    networks:
+      - mynet
+    depends_on:
+      - backend
+
+  backend:
+    container_name: back
+    ports:
+      - "5000:5000"
+    build:
+      context: /var/www/html/3-tier-todo/todo-backend
+      dockerfile: /var/www/html/3-tier-todo/todo-backend/Dockerfile
+    restart: always
+    environment:
+      DB_HOST: mysqld 
+      DB_USER: backenduser
+      DB_PASSWORD: Balli@123
+      DB_NAME: backendb
+    networks:
+      - mynet
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql
+    container_name: mysqld
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Balli@1234
+      MYSQL_DATABASE: backendb
+      MYSQL_USER: backenduser
+      MYSQL_PASSWORD: Balli@123
+    volumes:
+      - mysql_volu:/var/lib/mysql
+    networks:
+      - mynet
+volumes:
+  mysql_volu:
+networks:
+  mynet:
+    driver: bridge 
